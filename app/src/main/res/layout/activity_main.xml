@@ -8,8 +8,12 @@
         tools:context=".MainActivity">
 
     <TextView
+            android:id="@+id/main_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="42sp"
+            android:layout_margin="5sp"
+            android:textAlignment="center"
             android:text="Hello World!"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
