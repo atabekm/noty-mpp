@@ -1,0 +1,96 @@
+apply plugin: "org.jetbrains.kotlin.multiplatform"
+apply plugin: "kotlinx-serialization"
+apply plugin: "com.squareup.sqldelight"
+apply plugin: "com.android.library"
+
+// It is necessary because we need to have access to context on CommonCode to use SQLDelight database
+android {
+    compileSdkVersion Android.compile_sdk_version
+
+    // By default the android gradle plugin expects to find the kotlin source files in
+    // the folder `main`. This is to be able place the source code files inside androidMain folders
+    sourceSets {
+        main {
+            manifest.srcFile "src/androidMain/AndroidManifest.xml"
+            java.srcDirs = ["src/androidMain/kotlin"]
+            res.srcDirs = ["src/androidMain/res"]
+        }
+    }
+}
+
+kotlin {
+    targets {
+        final def iOSTarget = System.getenv("SDK_NAME")?.startsWith("iphoneos") ? presets.iosArm64 : presets.iosX64
+        fromPreset(iOSTarget, "iOS") {
+            binaries {
+                framework("shared")
+            }
+        }
+
+        fromPreset(presets.android, "android")
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation Libs.kotlin_std_common
+            implementation Libs.serialization_runtime_common
+            implementation Libs.sqldelight_runtime
+        }
+
+        androidMain.dependencies {
+            implementation Libs.kotlin_std
+            implementation Libs.serialization_runtime
+            implementation Libs.sqldelight_android
+        }
+
+        iOSMain.dependencies {
+            implementation Libs.serialization_runtime
+            implementation Libs.sqldelight_ios
+        }
+    }
+}
+
+sqldelight {
+    NoteDatabase {
+        // Package name used for the generated NoteDatabase.kt
+        packageName = "com.example.mpp.noty"
+
+        // An array of folders where the plugin will read your '.sq' and '.sqm' files.
+        // The folders are relative to the existing source set so if you specify ["db"],
+        // the plugin will look into 'src/main/db'
+        // Defaults to ["sqldelight"] (src/main/sqldelight)
+        sourceFolders = ["db"]
+
+        // The directory where to store '.db' schema files relative to the root of the project.
+        // These files are used to verify that migrations yield a database with the latest schema.
+        // Defaults to null so the verification tasks will not be created.
+        //schemaOutputDirectory = file("build/dbs")
+
+        // Optionally specify schema dependencies on other gradle projects
+        //dependency(project(":OtherProject"))
+    }
+    // For native targets, whether sqlite should be automatically linked.
+    // Defaults to true.
+    //linkSqlite = false
+}
+
+task packForXCode(type: Sync) {
+    final File frameworkDir = new File(buildDir, "xcode-frameworks")
+    final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+    final def framework = kotlin.targets.iOS.binaries.getFramework("shared", mode)
+
+    inputs.property "mode", mode
+    dependsOn framework.linkTask
+
+    from { framework.outputFile.parentFile }
+    into frameworkDir
+
+    doLast {
+        new File(frameworkDir, "gradlew").with {
+            text = "#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n"
+            setExecutable(true)
+        }
+    }
+}
+
+tasks.build.dependsOn packForXCode
