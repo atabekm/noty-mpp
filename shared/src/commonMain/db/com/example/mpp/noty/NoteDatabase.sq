@@ -1,0 +1,16 @@
+CREATE TABLE Note (
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT,
+    content TEXT NOT NULL
+);
+
+insertNote:
+INSERT INTO Note(id, title, content)
+VALUES(?, ?, ?);
+
+selectNotes:
+SELECT * FROM Note;
+
+selectNoteById:
+SELECT * FROM Note
+WHERE id = ?;
