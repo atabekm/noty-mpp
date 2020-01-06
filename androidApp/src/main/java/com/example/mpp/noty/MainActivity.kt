@@ -2,8 +2,7 @@ package com.example.mpp.noty
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mpp.noty.shared.createApplicationScreenMessage
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.mpp.noty.list.NoteListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,6 +10,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        main_text.text = createApplicationScreenMessage()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.root_container, NoteListFragment())
+            .commit()
     }
 }

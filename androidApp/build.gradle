@@ -31,5 +31,7 @@ dependencies {
     implementation Libs.constraintlayout
     implementation Libs.kotlin_std_jdk
     implementation Libs.ktx
+    implementation Libs.material
+    implementation Libs.recycler
     implementation Libs.sqldelight_android
 }
