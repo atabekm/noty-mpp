@@ -1,12 +1,12 @@
 CREATE TABLE Note (
-    id INTEGER NOT NULL PRIMARY KEY,
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT,
     content TEXT NOT NULL
 );
 
 insertNote:
-INSERT INTO Note(id, title, content)
-VALUES(?, ?, ?);
+INSERT INTO Note(title, content)
+VALUES(?, ?);
 
 selectNotes:
 SELECT * FROM Note;

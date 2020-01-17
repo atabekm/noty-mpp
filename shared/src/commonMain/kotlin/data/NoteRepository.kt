@@ -5,15 +5,30 @@ import com.example.mpp.noty.NoteDatabase
 
 class NoteRepository(private val db: NoteDatabase) {
 
-    fun getAllNotes(): List<Note> {
-        return db.noteDatabaseQueries.selectNotes().executeAsList()
+    fun getAllNotes(): Resource<List<Note>> {
+        return try {
+            val notes = db.noteDatabaseQueries.selectNotes().executeAsList()
+            Resource.success(notes)
+        } catch (e: Exception) {
+            Resource.error(e.toString())
+        }
     }
 
-    fun getNote(id: Long): Note {
-        return db.noteDatabaseQueries.selectNoteById(id).executeAsOne()
+    fun getNote(id: Long): Resource<Note> {
+        return try {
+            val note = db.noteDatabaseQueries.selectNoteById(id).executeAsOne()
+            Resource.success(note)
+        } catch (e: Exception) {
+            Resource.error(e.toString())
+        }
     }
 
-    fun addNote(note: Note) {
-        db.noteDatabaseQueries.insertNote(note.id, note.title, note.content)
+    fun addNote(title: String, content: String): Resource<Unit> {
+        return try {
+            db.noteDatabaseQueries.insertNote(title, content)
+            Resource.success(Unit)
+        } catch (e: Exception) {
+            Resource.error(e.toString())
+        }
     }
 }

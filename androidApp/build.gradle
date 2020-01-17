@@ -32,6 +32,8 @@ dependencies {
     implementation Libs.kotlin_std_jdk
     implementation Libs.ktx
     implementation Libs.material
+    implementation Libs.navigation
+    implementation Libs.navigation_ui
     implementation Libs.recycler
     implementation Libs.sqldelight_android
 }

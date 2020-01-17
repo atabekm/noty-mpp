@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_standard_half"
+    android:paddingBottom="@dimen/margin_standard_half"
+    android:paddingStart="@dimen/margin_standard"
+    android:paddingEnd="@dimen/margin_standard">
 
     <TextView
-            android:id="@+id/note_item_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/note_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/note_item_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

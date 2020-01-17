@@ -3,6 +3,7 @@ package com.example.mpp.noty.list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,8 @@ class NoteListAdapter : ListAdapter<Note, NoteListAdapter.ViewHolder>(NoteDiffCa
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(note: Note) {
+            itemView.note_item_title.isGone = note.title.isNullOrEmpty()
+            itemView.note_item_title.text = note.title
             itemView.note_item_content.text = note.content
         }
     }

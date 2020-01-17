@@ -32,18 +32,21 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation Libs.coroutines_core
             implementation Libs.kotlin_std_common
             implementation Libs.serialization_runtime_common
             implementation Libs.sqldelight_runtime
         }
 
         androidMain.dependencies {
+            implementation Libs.coroutines_android
             implementation Libs.kotlin_std
             implementation Libs.serialization_runtime
             implementation Libs.sqldelight_android
         }
 
         iOSMain.dependencies {
+            implementation Libs.coroutines_native
             implementation Libs.serialization_runtime
             implementation Libs.sqldelight_ios
         }
