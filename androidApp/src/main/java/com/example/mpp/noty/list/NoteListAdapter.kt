@@ -11,7 +11,9 @@ import com.example.mpp.noty.Note
 import com.example.mpp.noty.R
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NoteListAdapter : ListAdapter<Note, NoteListAdapter.ViewHolder>(NoteDiffCallback()) {
+class NoteListAdapter(
+    private val noteClickCallback: (Long) -> Unit
+) : ListAdapter<Note, NoteListAdapter.ViewHolder>(NoteDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
@@ -19,14 +21,17 @@ class NoteListAdapter : ListAdapter<Note, NoteListAdapter.ViewHolder>(NoteDiffCa
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), noteClickCallback)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(note: Note) {
+        fun bind(note: Note, noteClickCallback: (Long) -> Unit) {
             itemView.note_item_title.isGone = note.title.isNullOrEmpty()
             itemView.note_item_title.text = note.title
             itemView.note_item_content.text = note.content
+            itemView.setOnClickListener {
+                noteClickCallback.invoke(note.id)
+            }
         }
     }
 }

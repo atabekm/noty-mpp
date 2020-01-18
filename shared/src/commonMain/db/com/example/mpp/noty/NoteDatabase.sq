@@ -8,6 +8,10 @@ insertNote:
 INSERT INTO Note(title, content)
 VALUES(?, ?);
 
+updateNote:
+UPDATE Note SET title = ?, content = ?
+WHERE id = ?;
+
 selectNotes:
 SELECT * FROM Note;
 

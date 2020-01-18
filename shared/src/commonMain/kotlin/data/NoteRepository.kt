@@ -31,4 +31,13 @@ class NoteRepository(private val db: NoteDatabase) {
             Resource.error(e.toString())
         }
     }
+
+    fun updateNote(id: Long, title: String, content: String): Resource<Unit> {
+        return try {
+            db.noteDatabaseQueries.updateNote(title, content, id)
+            Resource.success(Unit)
+        } catch (e: Exception) {
+            Resource.error(e.toString())
+        }
+    }
 }

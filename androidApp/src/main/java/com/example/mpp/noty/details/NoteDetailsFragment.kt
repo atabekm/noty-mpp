@@ -44,9 +44,13 @@ class NoteDetailsFragment : Fragment(R.layout.fragment_note_details), NoteDetail
         }
     }
 
+    override fun onStop() {
+        closeKeyboard()
+        super.onStop()
+    }
+
     override fun onDestroy() {
         presenter.detachView()
-
         super.onDestroy()
     }
 
@@ -59,13 +63,11 @@ class NoteDetailsFragment : Fragment(R.layout.fragment_note_details), NoteDetail
         return when (item.itemId) {
             R.id.menu_save -> {
                 if (noteId == NEW_NOTE) {
-                    closeKeyboard()
-                    presenter.saveNote(
-                        noteDetailsTitle.text.toString(),
-                        noteDetailsContent.text.toString()
-                    )
-                    navigator.closeNote()
+                    presenter.saveNote(noteDetailsTitle.text.toString(), noteDetailsContent.text.toString())
+                } else {
+                    presenter.updateNote(noteId, noteDetailsTitle.text.toString(), noteDetailsContent.text.toString())
                 }
+                navigator.closeNote()
                 true
             }
             else -> super.onOptionsItemSelected(item)

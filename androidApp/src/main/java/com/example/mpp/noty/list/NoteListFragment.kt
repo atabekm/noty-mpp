@@ -14,8 +14,10 @@ import kotlinx.android.synthetic.main.fragment_note_list.*
 
 class NoteListFragment : Fragment(R.layout.fragment_note_list), NoteListView {
     private val presenter = ServiceLocator.noteListPresenter
-    private val adapter = NoteListAdapter()
     private val navigator = Navigator.getInstance()
+    private val adapter = NoteListAdapter { noteId ->
+        navigator.openNote(noteId)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
